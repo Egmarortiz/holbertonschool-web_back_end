@@ -2,7 +2,6 @@
 """Module executes mutiple corotuines"""
 
 
-
 from typing import List
 import asyncio
 from importlib import import_module
