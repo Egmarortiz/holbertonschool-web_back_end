@@ -7,6 +7,7 @@ from typing import List
 import asyncio
 from importlib import import_module
 
+
 wait_random = import_module('0-basic_async_syntax').wait_random
 
 
