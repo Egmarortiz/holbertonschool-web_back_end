@@ -49,14 +49,14 @@ class Server:
         Method returns pagination meta data
         """
         assert isinstance(page, int) and page > 0
-        assert isinstsnce(page, int) and page_size > 0
+        assert isinstance(page, int) and page_size > 0
 
         data_page = self.get_page(page, page_size)
         total_items = len(self.dataset())
         total_pages = math.ceil(total_items / page_size) if total_items else 0
 
         return {
-            "page_size": len(data_page)
+            "page_size": len(data_page),
             "page": page,
             "data": data_page,
             "next_page": page + 1 if page < total_pages else None,
