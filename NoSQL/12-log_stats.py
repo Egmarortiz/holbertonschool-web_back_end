@@ -28,5 +28,5 @@ if __name__ == "__main__":
     print(f"{total_logs} logs")
     print("Methods:")
     for m in methods:
-        print(f"\tmethod {m}: {method_counts[m]}")
+        print(f"    method {m}: {method_counts[m]}")
     print(f"{get_status} status check")
