@@ -1,23 +1,26 @@
 process.stdout.write('Welcome to Holberton School, what is your name?\n');
-
-// Ensure we read text
 process.stdin.setEncoding('utf8');
 
-// Echo name on a single CR-terminated line (the checker expects '\r', not '\n')
+let printedName = false;
+
 process.stdin.on('data', (chunk) => {
-  const name = chunk.trim();
-  process.stdout.write(`Your name is: ${name}\r`);
+  const name = String(chunk).trim();
+  if (name.length > 0) {
+    // Mocha checker expects CR specifically after the name
+    process.stdout.write(`Your name is: ${name}\r`);
+    printedName = true;
+  }
 });
 
-// Unified exit routine (prints closing message with newline)
 const cleanExit = () => {
+  // If we ended the last line with CR, move to the next line
+  if (printedName) process.stdout.write('\n');
   process.stdout.write('This important software is now closing\n');
   process.exit(0);
 };
 
-// Handle both EOF (Ctrl+D) and SIGINT (Ctrl+C)
 process.stdin.on('end', cleanExit);
 process.on('SIGINT', cleanExit);
 
-// Keep the process alive to accept input when piped/child-processed
+// Keep process alive under child processes
 process.stdin.resume();
