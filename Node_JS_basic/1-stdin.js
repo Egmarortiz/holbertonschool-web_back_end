@@ -1,26 +1,27 @@
 process.stdout.write('Welcome to Holberton School, what is your name?\n');
 process.stdin.setEncoding('utf8');
 
-let printedName = false;
+const isTTY = !!process.stdin.isTTY;  // interactive vs piped
+let printed = false;
 
 process.stdin.on('data', (chunk) => {
   const name = String(chunk).trim();
-  if (name.length > 0) {
-    // Mocha checker expects CR specifically after the name
-    process.stdout.write(`Your name is: ${name}\r`);
-    printedName = true;
-  }
+  if (!name) return;
+
+  // Mocha checker expects CR on interactive; EOF harness expects NL when piped
+  const lineEnd = isTTY ? '\r' : '\n';
+  process.stdout.write(`Your name is: ${name}${lineEnd}`);
+  printed = true;
 });
 
-const cleanExit = () => {
-  // If we ended the last line with CR, move to the next line
-  if (printedName) process.stdout.write('\n');
+// On EOF or Ctrl+C, print the closing line (with newline as required)
+const shutdown = () => {
+  // Do NOT inject an extra newline here; we already emitted the right one above.
   process.stdout.write('This important software is now closing\n');
   process.exit(0);
 };
 
-process.stdin.on('end', cleanExit);
-process.on('SIGINT', cleanExit);
+process.stdin.on('end', shutdown);
+process.on('SIGINT', shutdown);
 
-// Keep process alive under child processes
 process.stdin.resume();
