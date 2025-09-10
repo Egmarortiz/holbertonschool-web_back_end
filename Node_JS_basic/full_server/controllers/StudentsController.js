@@ -15,9 +15,7 @@ class StudentsController {
         for (let i = 0; i < fields.length; i += 1) {
           const field = fields[i];
           const names = groups[field] || [];
-          lines.push(
-            `Number of students in ${field}: ${names.length}. List: ${names.join(', ')}`
-          );
+          lines.push(`Number of students in ${field}: ${names.length}. List: ${names.join(', ')}`);
         }
 
         res.status(200).type('text').send(lines.join('\n'));
@@ -48,4 +46,6 @@ class StudentsController {
       });
   }
 }
+
+module.exports = StudentsController;
 
